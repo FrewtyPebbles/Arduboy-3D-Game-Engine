@@ -4,7 +4,7 @@
 #include "scene.h"
 #include "node2d.h"
 #include "sprite2d.h"
-#include "vector.h"
+#include "vec2.h"
 #include "surface.h"
 
 Arduboy2 arduboy;

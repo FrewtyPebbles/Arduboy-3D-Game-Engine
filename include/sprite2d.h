@@ -1,7 +1,7 @@
 #pragma once
 
 #include "node2d.h"
-#include "vector.h"
+#include "vec2.h"
 #include "bitmaps.h"
 
 class Sprite2D : public Node2D {

@@ -29,7 +29,7 @@ void _SurfaceMaterialBase::fragment_shader(Vertex * vertex, Arduboy2 & arduboy, 
 
 }
 
-Surface2D::Surface2D(uint8_t id, Node ** children, uint16_t children_count = 0, _SurfaceMaterialBase * material, Vec2I dimensions, Vec2F origin)
+Surface2D::Surface2D(uint8_t id, Node ** children, uint16_t children_count, _SurfaceMaterialBase * material, Vec2I dimensions, Vec2F origin)
  : Node2D(id, children, children_count), material(material), dimensions(dimensions), origin(origin){}
 
 void Surface2D::update(Scene * scene, Arduboy2 & arduboy, const Sprites & sprites) {

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "vector.h"
+#include "vec2.h"
 
 class Node2D;
 
@@ -22,9 +22,4 @@ public:
   uint16_t get_rotation();
 private:
   uint16_t rotation = 0;
-  inline uint16_t wrap_angle(uint16_t angle) {
-      // Wrap to 0..359 efficiently
-      angle %= 360;          // now in -359..359
-      return angle < 0 ? angle + 360 : angle;
-  }
 };

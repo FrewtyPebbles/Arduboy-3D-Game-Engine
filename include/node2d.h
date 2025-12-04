@@ -1,7 +1,7 @@
 #pragma once
 
 #include "node.h"
-#include "vector.h"
+#include "vec2.h"
 #include "transform2d.h"
 
 class Node2D : public Node {

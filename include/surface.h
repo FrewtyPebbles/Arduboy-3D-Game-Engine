@@ -2,6 +2,7 @@
 #pragma once
 // This is a surface on which shades can be rendered onto it from the bitmaps.h file
 #include "node2d.h"
+#include "vec3.h"
 #include "bitmaps.h"
 
 
