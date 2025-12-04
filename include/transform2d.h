@@ -12,7 +12,7 @@ public:
   Node2D * node;
 
   Vec2I position = Vec2I(0, 0);
-  Vec2F scale = Vec2I(1.0, 1.0);
+  Vec2F16B scale = Vec2I(1.0, 1.0);
 
 
   Transform2D get_global_transform();

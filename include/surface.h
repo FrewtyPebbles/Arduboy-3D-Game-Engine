@@ -82,9 +82,9 @@ void SurfaceMaterial<VertexType>::render(int16_t* vertex_data_buffer, uint16_t v
 // This is the class that can be placed into the scene.
 class Surface2D : public Node2D {
 public:
-  Surface2D(uint8_t id, Node ** children = nullptr, uint16_t children_count = 0, _SurfaceMaterialBase * material = nullptr, Vec2I dimensions = Vec2I(0, 0), Vec2F origin = Vec2F(0.5, 0.5));
+  Surface2D(uint8_t id, Node ** children = nullptr, uint16_t children_count = 0, _SurfaceMaterialBase * material = nullptr, Vec2I dimensions = Vec2I(0, 0), Vec2F16B origin = Vec2F16B(0.5, 0.5));
   
-  Vec2F origin;
+  Vec2F16B origin;
   
   Vec2I dimensions;
 

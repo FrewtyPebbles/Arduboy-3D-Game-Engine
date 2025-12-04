@@ -1,6 +1,7 @@
 #pragma once
 
 #include "utility.h"
+#include "fraction.h"
 
 #include <stdint.h>
 #include <math.h>
@@ -258,4 +259,4 @@ namespace Utility {
 // TYPE ALIASES
 
 typedef Vec2<int16_t> Vec2I;
-typedef Vec2<float> Vec2F;
+typedef Vec2<fraction<int8_t, int8_t>> Vec2F16B;

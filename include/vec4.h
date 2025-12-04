@@ -1,6 +1,7 @@
 #pragma once
 
 #include "utility.h"
+#include "fraction.h"
 
 #include <stdint.h>
 #include <math.h>
@@ -297,4 +298,4 @@ namespace Utility{
 
 typedef Vec4<int16_t> Vec4I16B;
 typedef Vec4<int8_t> Vec4I8B;
-typedef Vec4<float> Vec4F;
+typedef Vec4<fraction<int8_t, int8_t>> Vec4F16B;
