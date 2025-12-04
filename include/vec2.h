@@ -152,62 +152,46 @@ Vec2<float> Vec2<T>::operator-(const Vec2<float>& other) const {
 
 template<typename T>
 void Vec2<T>::operator*=(const Vec2<T>& other) {
-  auto res = *this * other;
-  x = res.x;
-  y = res.y;
+  *this = *this * other;
 }
 
 template<typename T>
 template<typename U>
 void Vec2<T>::operator*=(const Vec2<U>& other) {
-  auto res = *this * other;
-  x = res.x;
-  y = res.y;
+  *this = *this * other;
 }
 
 template<typename T>
 void Vec2<T>::operator/=(const Vec2<T>& other) {
-  auto res = *this / other;
-  x = res.x;
-  y = res.y;
+  *this = *this / other;
 }
 
 template<typename T>
 template<typename U>
 void Vec2<T>::operator/=(const Vec2<U>& other) {
-  auto res = *this / other;
-  x = res.x;
-  y = res.y;
+  *this = *this / other;
 }
 
 template<typename T>
 void Vec2<T>::operator+=(const Vec2<T>& other) {
-  auto res = *this + other;
-  x = res.x;
-  y = res.y;
+  *this = *this + other;
 }
 
 template<typename T>
 template<typename U>
 void Vec2<T>::operator+=(const Vec2<U>& other) {
-  auto res = *this + other;
-  x = res.x;
-  y = res.y;
+  *this = *this + other;
 }
 
 template<typename T>
 void Vec2<T>::operator-=(const Vec2<T>& other) {
-  auto res = *this - other;
-  x = res.x;
-  y = res.y;
+  *this = *this - other;
 }
 
 template<typename T>
 template<typename U>
 void Vec2<T>::operator-=(const Vec2<U>& other) {
-  auto res = *this - other;
-  x = res.x;
-  y = res.y;
+  *this = *this - other;
 }
 
 template<typename T>

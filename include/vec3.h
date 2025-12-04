@@ -146,70 +146,46 @@ Vec3<float> Vec3<T>::operator-(const Vec3<float>& other) const {
 
 template<typename T>
 void Vec3<T>::operator*=(const Vec3<T>& other) {
-  auto res = *this * other;
-  x = res.x;
-  y = res.y;
-  z = res.z;
+  *this = *this * other;
 }
 
 template<typename T>
 template<typename U>
 void Vec3<T>::operator*=(const Vec3<U>& other) {
-  auto res = *this * other;
-  x = res.x;
-  y = res.y;
-  z = res.z;
+  *this = *this * other;
 }
 
 template<typename T>
 void Vec3<T>::operator/=(const Vec3<T>& other) {
-  auto res = *this / other;
-  x = res.x;
-  y = res.y;
-  z = res.z;
+  *this = *this / other;
 }
 
 template<typename T>
 template<typename U>
 void Vec3<T>::operator/=(const Vec3<U>& other) {
-  auto res = *this * other;
-  x = res.x;
-  y = res.y;
-  z = res.z;
+  *this = *this * other;
 }
 
 template<typename T>
 void Vec3<T>::operator+=(const Vec3<T>& other) {
-  auto res = *this + other;
-  x = res.x;
-  y = res.y;
-  z = res.z;
+  *this = *this + other;
 }
 
 template<typename T>
 template<typename U>
 void Vec3<T>::operator+=(const Vec3<U>& other) {
-  auto res = *this * other;
-  x = res.x;
-  y = res.y;
-  z = res.z;
+  *this = *this * other;
 }
 
 template<typename T>
 void Vec3<T>::operator-=(const Vec3<T>& other) {
-  auto res = *this - other;
-  x = res.x;
-  y = res.y;
-  z = res.z;
+  *this = *this - other;
 }
 
 template<typename T>
 template<typename U>
 void Vec3<T>::operator-=(const Vec3<U>& other) {
-  auto res = *this * other;
-  x = res.x;
-  y = res.y;
-  z = res.z;
+  *this = *this * other;
 }
 
 template<typename T>

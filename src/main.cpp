@@ -40,7 +40,7 @@ void setup() {
   arduboy.setFrameRate(30);
 
   Serial.begin(9600);
-
+  
   main_scene.root_node = &root_node;
   root_node.insert_child(&game_root);
   game_root.insert_child(&cursor);

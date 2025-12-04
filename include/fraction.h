@@ -1,4 +1,5 @@
 #pragma once
+#include <Arduino.h>
 #include <stdint.h>
 #include "types.h"
 
@@ -9,6 +10,9 @@ public:
     fraction(NumeratorType numerator, DenominatorType denominator);
     template<typename U>
     fraction(const U& integer);
+
+    template <typename OtherNumeratorType, typename OtherDenominatorType>
+    fraction(const fraction<OtherNumeratorType, OtherDenominatorType> & other);
 
     NumeratorType numerator;
     DenominatorType denominator;
@@ -93,6 +97,10 @@ template<typename U>
 fraction<NumeratorType, DenominatorType>::fraction(const U& integer) : numerator(static_cast<NumeratorType>(integer)), denominator(static_cast<DenominatorType>(1)) {}
 
 template <typename NumeratorType, typename DenominatorType>
+template <typename OtherNumeratorType, typename OtherDenominatorType>
+fraction<NumeratorType, DenominatorType>::fraction(const fraction<OtherNumeratorType, OtherDenominatorType> & other) : numerator(static_cast<NumeratorType>(other.numerator)), denominator(static_cast<NumeratorType>(other.denominator)) {}
+
+template <typename NumeratorType, typename DenominatorType>
 auto fraction<NumeratorType, DenominatorType>::greatest_common_factor() -> Utility::Types::choose_larger_type<NumeratorType, DenominatorType> {
     if (numerator == 0) return denominator;
     if (denominator == 0) return numerator;
@@ -102,7 +110,6 @@ auto fraction<NumeratorType, DenominatorType>::greatest_common_factor() -> Utili
 
     // Remove all factors of 2 from numerator
     numerator >>= __builtin_ctz(numerator);
-
     do {
         // Remove all factors of 2 from denominator
         denominator >>= __builtin_ctz(denominator);
