@@ -1,5 +1,7 @@
 #pragma once
 
+#include "utility.h"
+
 #include <stdint.h>
 #include <math.h>
 
@@ -76,7 +78,7 @@ template<typename T> struct Vec2 {
 
   float magnitude() const;
 
-  Vec2 rotate(const float & angle_radians) const;
+  Vec2 rotate(int16_t angle_degrees) const;
 
   Vec2<float> project_onto(const Vec2<float> & other) const;
 
@@ -228,13 +230,14 @@ float Vec2<T>::magnitude() const {
 }
 
 template<typename T>
-Vec2<T> Vec2<T>::rotate(const float & angle_radians) const {
+Vec2<T> Vec2<T>::rotate(int16_t angle_degrees) const {
+  angle_degrees = Utility::wrap_euler_angle(angle_degrees);
   float old_x = x;
   float old_y = y;
   
   // Calculate Sine and Cosine of the angle once for efficiency
-  float cos_theta = cos(angle_radians);
-  float sin_theta = sin(angle_radians);
+  float cos_theta = cos(angle_degrees);
+  float sin_theta = sin(angle_degrees);
 
   // Apply the rotation formula
   return Vec2<T>(old_x * cos_theta - old_y * sin_theta, old_x * sin_theta + old_y * cos_theta);
@@ -244,6 +247,13 @@ template<typename T>
 Vec2<float> Vec2<T>::project_onto(const Vec2<float> & other) const {
   return (this->dot(other)/pow(other.magnitude(), 2))*other;
 }
+
+namespace Utility {
+  template<typename T>
+  Vec2<T> wrap_euler_angle(Vec2<T> euler_angles) {
+    return Vec2<T>(wrap_euler_angle(euler_angles.x), wrap_euler_angle(euler_angles.y));
+  }
+};
 
 // TYPE ALIASES
 

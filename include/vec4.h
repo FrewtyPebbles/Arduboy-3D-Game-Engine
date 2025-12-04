@@ -1,5 +1,7 @@
 #pragma once
 
+#include "utility.h"
+
 #include <stdint.h>
 #include <math.h>
 
@@ -283,6 +285,13 @@ template<typename T>
 Vec4<float> Vec4<T>::project_onto(const Vec4<float> & other) const {
   return (this->dot(other)/pow(other.magnitude(), 2))*other;
 }
+
+namespace Utility{
+  template<typename T>
+  Vec4<T> wrap_euler_angle(Vec4<T> euler_angles) {
+    return Vec4<T>(wrap_euler_angle(euler_angles.x), wrap_euler_angle(euler_angles.y), wrap_euler_angle(euler_angles.z), wrap_euler_angle(euler_angles.w));
+  }
+};
 
 // TYPE ALIASES
 
