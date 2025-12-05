@@ -18,9 +18,41 @@ template<typename T> struct Vec2 {
   template<typename U>
   Vec2<T> operator*(const U& other) const;
 
-  template<typename U>
-  friend Vec2<T> operator*(const U& lhs, const Vec2<T>& rhs) {
-    return rhs * lhs;
+  friend Vec2<T> operator*(const uint8_t& lhs, const Vec2<T>& rhs) {
+      return Vec2<T>(lhs * rhs.x, lhs * rhs.y);
+  }
+
+  friend Vec2<T> operator*(const uint16_t& lhs, const Vec2<T>& rhs) {
+      return Vec2<T>(lhs * rhs.x, lhs * rhs.y);
+  }
+
+  friend Vec2<T> operator*(const uint32_t& lhs, const Vec2<T>& rhs) {
+      return Vec2<T>(lhs * rhs.x, lhs * rhs.y);
+  }
+
+  friend Vec2<T> operator*(const uint64_t& lhs, const Vec2<T>& rhs) {
+      return Vec2<T>(lhs * rhs.x, lhs * rhs.y);
+  }
+
+  friend Vec2<T> operator*(const int8_t& lhs, const Vec2<T>& rhs) {
+      return Vec2<T>(lhs * rhs.x, lhs * rhs.y);
+  }
+
+  friend Vec2<T> operator*(const int16_t& lhs, const Vec2<T>& rhs) {
+      return Vec2<T>(lhs * rhs.x, lhs * rhs.y);
+  }
+
+  friend Vec2<T> operator*(const int32_t& lhs, const Vec2<T>& rhs) {
+      return Vec2<T>(lhs * rhs.x, lhs * rhs.y);
+  }
+
+  friend Vec2<T> operator*(const int64_t& lhs, const Vec2<T>& rhs) {
+      return Vec2<T>(lhs * rhs.x, lhs * rhs.y);
+  }
+
+  template<typename N, typename D>
+  friend Vec2<T> operator*(const fraction<N, D>& lhs, const Vec2<T>& rhs) {
+      return Vec2<T>(lhs * rhs.x, lhs * rhs.y);
   }
 
   template<typename U>
@@ -103,7 +135,7 @@ Vec2<T> Vec2<T>::operator*(const U& other) const {
 template<typename T>
 template<typename U>
 Vec2<T> Vec2<T>::operator*(const Vec2<U>& other) const {
-  return Vec2<T>(this->x * other.x, this->y * other.y);
+  return Vec2<T>(static_cast<T>(this->x * other.x), static_cast<T>(this->y * other.y));
 }
 
 template<typename T>

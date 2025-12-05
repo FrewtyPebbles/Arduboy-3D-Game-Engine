@@ -10,20 +10,14 @@ Transform2D::Transform2D(Node2D * node, Vec2I position, Vec2I scale, int16_t rot
 Transform2D Transform2D::get_global_transform() {
   Node2D * parent = this->node;
   Transform2D global_transform = Transform2D(this->node, position, scale, rotation);
-  Serial.println("WHILE START");
   while ((parent = (Node2D *)parent->get_parent()) != nullptr) {
-    Serial.println("TEST1");
     global_transform.scale *= parent->transform.scale;
-    Serial.println("TEST2");
     global_transform.rotate(parent->transform.get_rotation());
-    Serial.println("TEST3");
+
     //position
     Vec2I scaled_offset = global_transform.position * parent->transform.scale;
-    Serial.println("TEST4");
     Vec2I rotated_offset = scaled_offset.rotate(parent->transform.rotation);
-    Serial.println("TEST5");
     global_transform.position = parent->transform.position + rotated_offset;
-    Serial.println("TEST6");
   }
   return global_transform;
 }
