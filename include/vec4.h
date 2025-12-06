@@ -1,6 +1,7 @@
 #pragma once
 
 #include "utility.h"
+#include "fraction_utilities.h"
 #include "fraction.h"
 
 #include <stdint.h>
@@ -17,11 +18,35 @@ template<typename T> struct Vec4 {
   template<typename U>
   Vec4<T> operator*(const U& other) const;
 
-  template<typename U>
-  friend Vec4<T> operator*(const U& lhs, const Vec4<T>& rhs) {
-    return rhs * lhs;
+  friend Vec4<T> operator*(const uint8_t& lhs, const Vec4<T>& rhs) {
+      return Vec4<T>(lhs * rhs.x, lhs * rhs.y, lhs * rhs.z, lhs * rhs.w);
   }
 
+  friend Vec4<T> operator*(const uint16_t& lhs, const Vec4<T>& rhs) {
+      return Vec4<T>(lhs * rhs.x, lhs * rhs.y, lhs * rhs.z, lhs * rhs.w);
+  }
+
+  friend Vec4<T> operator*(const uint32_t& lhs, const Vec4<T>& rhs) {
+      return Vec4<T>(lhs * rhs.x, lhs * rhs.y, lhs * rhs.z, lhs * rhs.w);
+  }
+
+  friend Vec4<T> operator*(const int8_t& lhs, const Vec4<T>& rhs) {
+      return Vec4<T>(lhs * rhs.x, lhs * rhs.y, lhs * rhs.z, lhs * rhs.w);
+  }
+
+  friend Vec4<T> operator*(const int16_t& lhs, const Vec4<T>& rhs) {
+      return Vec4<T>(lhs * rhs.x, lhs * rhs.y, lhs * rhs.z, lhs * rhs.w);
+  }
+
+  friend Vec4<T> operator*(const int32_t& lhs, const Vec4<T>& rhs) {
+      return Vec4<T>(lhs * rhs.x, lhs * rhs.y, lhs * rhs.z, lhs * rhs.w);
+  }
+
+  template<typename N, typename D>
+  friend Vec4<T> operator*(const fraction<N, D>& lhs, const Vec4<T>& rhs) {
+      return Vec4<T>(lhs * rhs.x, lhs * rhs.y, lhs * rhs.z, lhs * rhs.w);
+  }
+  
   template<typename U>
   Vec4<T> operator*(const Vec4<U>& other) const;
 
@@ -30,9 +55,33 @@ template<typename T> struct Vec4 {
   template<typename U>
   Vec4<T> operator/(const U& other) const;
 
-  template<typename U>
-  friend Vec4<T> operator/(const U& lhs, const Vec4<T>& rhs) {
-    return rhs / lhs;
+  friend Vec4<T> operator/(const uint8_t& lhs, const Vec4<T>& rhs) {
+      return Vec4<T>(lhs / rhs.x, lhs / rhs.y, lhs / rhs.z, lhs / rhs.w);
+  }
+
+  friend Vec4<T> operator/(const uint16_t& lhs, const Vec4<T>& rhs) {
+      return Vec4<T>(lhs / rhs.x, lhs / rhs.y, lhs / rhs.z, lhs / rhs.w);
+  }
+
+  friend Vec4<T> operator/(const uint32_t& lhs, const Vec4<T>& rhs) {
+      return Vec4<T>(lhs / rhs.x, lhs / rhs.y, lhs / rhs.z, lhs / rhs.w);
+  }
+
+  friend Vec4<T> operator/(const int8_t& lhs, const Vec4<T>& rhs) {
+      return Vec4<T>(lhs / rhs.x, lhs / rhs.y, lhs / rhs.z, lhs / rhs.w);
+  }
+
+  friend Vec4<T> operator/(const int16_t& lhs, const Vec4<T>& rhs) {
+      return Vec4<T>(lhs / rhs.x, lhs / rhs.y, lhs / rhs.z, lhs / rhs.w);
+  }
+
+  friend Vec4<T> operator/(const int32_t& lhs, const Vec4<T>& rhs) {
+      return Vec4<T>(lhs / rhs.x, lhs / rhs.y, lhs / rhs.z, lhs / rhs.w);
+  }
+
+  template<typename N, typename D>
+  friend Vec4<T> operator/(const fraction<N, D>& lhs, const Vec4<T>& rhs) {
+      return Vec4<T>(lhs / rhs.x, lhs / rhs.y, lhs / rhs.z, lhs / rhs.w);
   }
 
   template<typename U>
@@ -74,11 +123,14 @@ template<typename T> struct Vec4 {
 
   float angle_between(const Vec4& other) const;
 
-  float magnitude() const;
+  template<typename N, typename D>
+  fraction<N, D> magnitude() const;
 
-  Vec4 rotate(const Vec4<float> & euler_angles_radians) const;
+  template<typename N, typename D>
+  Vec4<T> rotate(const Vec4<fraction<N, D>>& euler_angles_radians) const;
 
-  Vec4<float> project_onto(const Vec4<float> & other) const;
+  template<typename N, typename D>
+  Vec4<fraction<N, D>> project_onto(const Vec4<fraction<N, D>> & other) const;
 
 };
 
@@ -199,60 +251,54 @@ float Vec4<T>::angle_between(const Vec4<T>& other) const {
 }
 
 template<typename T>
-float Vec4<T>::magnitude() const {
-  return sqrtf(static_cast<float>(this->dot(*this)));
+template<typename N, typename D>
+fraction<N, D> Vec4<T>::magnitude() const {
+  return Utility::sqrt(this->dot(*this));
 }
 
 template<typename T>
-Vec4<T> Vec4<T>::rotate(const Vec4<float> & euler_angles_radians) const {
-  float yaw = euler_angles_radians.z;
-  float pitch = euler_angles_radians.x;
-  float roll = euler_angles_radians.y;
+template<typename N, typename D>
+Vec4<T> Vec4<T>::rotate(const Vec4<fraction<N, D>>& euler_angles_radians) const {
+    // Convert fraction angles to T
+    T rx = static_cast<T>(euler_angles_radians.x);
+    T ry = static_cast<T>(euler_angles_radians.y);
+    T rz = static_cast<T>(euler_angles_radians.z);
 
-  float cx = cosf(pitch);
-  float sx = sinf(pitch);
-  float cy = cosf(roll);
-  float sy = sinf(roll);
-  float cz = cosf(yaw);
-  float sz = sinf(yaw);
-  
-  // Store the original vector values in floats for calculation
-  float px = static_cast<float>(this->x);
-  float py = static_cast<float>(this->y);
-  float pz = static_cast<float>(this->z);
+    // Compute sin & cos for each axis
+    T cx = Utility::cos(rx, 3);
+    T sx = Utility::sin(rx, 3);
 
-  // Apply Z rotation (Yaw)
-  float tempX = px * cz - py * sz;
-  float tempY = px * sz + py * cz;
-  px = tempX;
-  py = tempY;
-  // pz remains unchanged in Z rotation
+    T cy = Utility::cos(ry, 3);
+    T sy = Utility::sin(ry, 3);
 
-  // Apply X rotation (Pitch)
-  tempY = py * cx - pz * sx;
-  float tempZ = py * sx + pz * cx;
-  py = tempY;
-  pz = tempZ;
-  // px remains unchanged in X rotation
+    T cz = Utility::cos(rz, 3);
+    T sz = Utility::sin(rz, 3);
 
-  // Apply Y rotation (Roll)
-  tempX = px * cy + pz * sy;
-  tempZ = -px * sy + pz * cy;
-  px = tempX;
-  pz = tempZ;
-  // py remains unchanged in Y rotation
+    // Rotation matrices:
+    // Rz * Ry * Rx applied to vector v
 
-  // Return a new Vec4<T> with the rotated coordinates, cast back to T
-  return Vec4<T>(
-      static_cast<T>(px),
-      static_cast<T>(py),
-      static_cast<T>(pz)
-  );
+    // Step 1: rotate around X
+    T x1 =  x;
+    T y1 =  y * cx - z * sx;
+    T z1 =  y * sx + z * cx;
+
+    // Step 2: rotate around Y
+    T x2 =  x1 * cy + z1 * sy;
+    T y2 =  y1;
+    T z2 = -x1 * sy + z1 * cy;
+
+    // Step 3: rotate around Z
+    T x3 = x2 * cz - y2 * sz;
+    T y3 = x2 * sz + y2 * cz;
+    T z3 = z2;
+
+    return Vec4<T>(x3, y3, z3, this->w);
 }
 
 template<typename T>
-Vec4<float> Vec4<T>::project_onto(const Vec4<float> & other) const {
-  return (this->dot(other)/pow(other.magnitude(), 2))*other;
+template<typename N, typename D>
+Vec4<fraction<N, D>> Vec4<T>::project_onto(const Vec4<fraction<N, D>> & other) const {
+  return (this->dot(other)/Utility::pow(other.magnitude(), 2))*other;
 }
 
 namespace Utility{

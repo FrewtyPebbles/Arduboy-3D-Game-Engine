@@ -7,7 +7,7 @@ class Node2D;
 class Transform2D {
 public:
   Transform2D(Node2D * node);
-  Transform2D(Node2D * node, Vec2I position, Vec2I scale, int16_t rotation);
+  Transform2D(Node2D * node, Vec2I position, Vec2I scale, fraction<uint8_t, uint8_t> rotation);
 
   Node2D * node;
 
@@ -17,9 +17,14 @@ public:
 
   Transform2D get_global_transform();
 
-  void rotate(int16_t angle_deg);
-  void set_rotation(int16_t angle_rad);
-  uint16_t get_rotation();
+  template<typename N, typename D>
+  void rotate(fraction<N, D> angle_rad);
+
+  template<typename N, typename D>
+  void set_rotation(fraction<N, D> angle_rad);
+
+  fraction<uint8_t, uint8_t> get_rotation();
+
 private:
-  uint16_t rotation = 0;
+  fraction<uint8_t, uint8_t> rotation = 0;
 };

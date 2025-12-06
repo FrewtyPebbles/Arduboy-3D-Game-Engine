@@ -1,11 +1,11 @@
 #include "transform2d.h"
 #include "node2d.h"
-#include "utility.h"
+#include "fraction_utilities.h"
 
 Transform2D::Transform2D(Node2D * node)
   : node(node) {}
-Transform2D::Transform2D(Node2D * node, Vec2I position, Vec2I scale, int16_t rotation)
-  : node(node), position(position), scale(scale), rotation(Utility::wrap_euler_angle(rotation)) {}
+Transform2D::Transform2D(Node2D * node, Vec2I position, Vec2I scale, fraction<uint8_t, uint8_t> rotation)
+  : node(node), position(position), scale(scale), rotation(Utility::wrap_euler_angle_radians(rotation)) {}
 
 Transform2D Transform2D::get_global_transform() {
   Node2D * parent = this->node;
@@ -22,14 +22,16 @@ Transform2D Transform2D::get_global_transform() {
   return global_transform;
 }
 
-void Transform2D::rotate(int16_t angle_rad) {
-  this->rotation += Utility::wrap_euler_angle(angle_rad);
+template<typename N, typename D>
+void Transform2D::rotate(fraction<N, D> angle_rad) {
+  this->rotation += Utility::wrap_euler_angle_radians(angle_rad);
 }
 
-void Transform2D::set_rotation(int16_t angle_rad) {
-  this->rotation = Utility::wrap_euler_angle(angle_rad);
+template<typename N, typename D>
+void Transform2D::set_rotation(fraction<N, D> angle_rad) {
+  this->rotation = Utility::wrap_euler_angle_radians(angle_rad);
 }
 
-uint16_t Transform2D::get_rotation() {
+fraction<uint8_t, uint8_t> Transform2D::get_rotation() {
   return this->rotation;
 }

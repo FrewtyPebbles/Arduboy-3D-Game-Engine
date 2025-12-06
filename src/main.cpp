@@ -6,6 +6,8 @@
 #include "sprite2d.h"
 #include "vec2.h"
 #include "surface.h"
+#include "fraction.h"
+#include "fraction_utilities.h"
 
 Arduboy2 arduboy;
 Sprites sprites;
@@ -33,13 +35,16 @@ SpriteSheet texel_palette[] = {
 SurfaceMaterial<> surface_mat = SurfaceMaterial<>(texel_palette, 5);
 Surface2D surface = Surface2D(4, nullptr, 0, &surface_mat, Vec2I(5,5));
 
+// game values
+F64B direction(0);
+
 void setup() {
   // put your setup code here, to run once:
   
   arduboy.begin();
-  arduboy.setFrameRate(60);
+  arduboy.setFrameRate(10);
 
-  // Serial.begin(9600);
+  Serial.begin(9600);
     
   main_scene.root_node = &root_node;
   root_node.insert_child(&game_root);
@@ -63,26 +68,41 @@ void loop() {
 
   arduboy.display();
 }
+Vec2I dir(1, 0);
 
 void update() {
-  Vec2I vel = Vec2I(0,0);
+  int8_t vel = 0;
+  
+  if (direction <= F64B(-1, 1000)) {
+    direction += F64B(1, 1000);
+  }
+  if (direction >= F64B(1, 1000)) {
+    direction -= F64B(1, 1000);
+  }
   if (arduboy.pressed(UP_BUTTON)) {
-    vel.y -= 1;
+    vel = -1;
   }
   if (arduboy.pressed(DOWN_BUTTON)) {
-    vel.y += 1;
+    vel = 1;
   }
   if (arduboy.pressed(LEFT_BUTTON)) {
-    vel.x -= 1;
+    direction += F64B(2, 1000);
   }
   if (arduboy.pressed(RIGHT_BUTTON)) {
-    vel.x += 1;
+    direction -= F64B(2, 1000);
   }
+  direction = Utility::wrap_euler_angle_radians(direction);
+
+  char buf[30];
+  direction.to_string(buf);
+  Serial.println(buf);
+
+  dir = dir.rotate(direction);
   
   block.transform.position.y -= 1;
   if (block.transform.position.y < -(int8_t)block.get_height()) {
     block.transform.position.y = HEIGHT;
   }
 
-  cursor.transform.position += vel;
+  cursor.transform.position += dir * vel;
 }

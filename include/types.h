@@ -69,6 +69,37 @@ namespace Utility {
         template <typename T>
         using make_unsigned_type = typename make_unsigned_type_impl<T>::type;
 
+        // MAKE SIGNED
+
+        template <typename T>
+        struct make_signed_type_impl {
+            using type = T;
+        };
+
+        template <>
+        struct make_signed_type_impl<uint64_t> {
+            using type = int64_t;
+        };
+
+        template <>
+        struct make_signed_type_impl<uint32_t> {
+            using type = int32_t;
+        };
+
+        template <>
+        struct make_signed_type_impl<uint16_t> {
+            using type = int16_t;
+        };
+
+        template <>
+        struct make_signed_type_impl<uint8_t> {
+            using type = int8_t;
+        };
+
+        // Alias
+        template <typename T>
+        using make_signed_type = typename make_signed_type_impl<T>::type;
+
         // NUMERIC LIMIT
 
         template <typename T>

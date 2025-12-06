@@ -223,6 +223,10 @@ public:
     friend bool operator==(float lhs, const fraction& rhs) {
         return rhs == lhs; // delegate
     }
+
+    void to_string(char * buffer) const {
+        sprintf(buffer, "%ld/%ld", numerator, denominator);
+    }
 };
 
 template <typename NumeratorType, typename DenominatorType>
@@ -279,7 +283,7 @@ fraction<NumeratorType, DenominatorType>::fraction(const double& floating_point)
 
 template <typename NumeratorType, typename DenominatorType>
 fraction<NumeratorType, DenominatorType>::fraction(NumeratorType numerator, DenominatorType denominator)
- : numerator(numerator), denominator(denominator)
+ : numerator(numerator), denominator(denominator == 0 ? 1 : denominator)
 {simplify();}
 
 template <typename NumeratorType, typename DenominatorType>
@@ -296,33 +300,44 @@ fraction<NumeratorType, DenominatorType>::fraction(const fraction<OtherNumerator
 
 template <typename NumeratorType, typename DenominatorType>
 auto fraction<NumeratorType, DenominatorType>::greatest_common_factor() -> Utility::Types::choose_larger_type<NumeratorType, DenominatorType> {
-    auto num = static_cast<Utility::Types::make_unsigned_type<decltype(numerator)>>(numerator);
-    auto denom = static_cast<Utility::Types::make_unsigned_type<decltype(denominator)>>(denominator);
-    if (num == 0) return denom;
-    if (denom == 0) return num;
-
+    using LargeUnsigned = Utility::Types::make_unsigned_type<
+        Utility::Types::choose_larger_type<NumeratorType, DenominatorType>
+    >;
+    
+    // Absolute values - need to handle signed-to-unsigned conversion properly
+    LargeUnsigned num = numerator < 0 ? static_cast<LargeUnsigned>(-static_cast<typename Utility::Types::make_unsigned_type<LargeUnsigned>>(numerator)) 
+                                       : static_cast<LargeUnsigned>(numerator);
+    LargeUnsigned denom = denominator < 0 ? static_cast<LargeUnsigned>(-static_cast<typename Utility::Types::make_unsigned_type<LargeUnsigned>>(denominator)) 
+                                           : static_cast<LargeUnsigned>(denominator);
+    
+    if (num == 0) return static_cast<Utility::Types::choose_larger_type<NumeratorType, DenominatorType>>(denom);
+    if (denom == 0) return static_cast<Utility::Types::choose_larger_type<NumeratorType, DenominatorType>>(num);
+    
     // Count common factors of 2
-    uint8_t shift = __builtin_ctz(num | denom);
-
+    uint8_t shift = 0;
+    while (((num | denom) & 1) == 0) {
+        num >>= 1;
+        denom >>= 1;
+        ++shift;
+    }
+    
     // Remove all factors of 2 from numerator
-    num >>= __builtin_ctz(num);
-    do {
+    while ((num & 1) == 0) num >>= 1;
+    
+    while (denom != 0) {
         // Remove all factors of 2 from denominator
-        denom >>= __builtin_ctz(denom);
-
-        // Make sure numerator <= denominator
+        while ((denom & 1) == 0) denom >>= 1;
+        
+        // Make sure num <= denom for subtraction
         if (num > denom) {
-            Utility::Types::choose_larger_type<NumeratorType, DenominatorType> temp = num;
+            LargeUnsigned t = num;
             num = denom;
-            denom = temp;
+            denom = t;
         }
-
-        // Subtract
-        denom = denom - num;
-
-    } while (denom != 0);
-
-    return num << shift;
+        denom -= num;
+    }
+    
+    return static_cast<Utility::Types::choose_larger_type<NumeratorType, DenominatorType>>(num << shift);
 }
 
 template <typename NumeratorType, typename DenominatorType>
@@ -526,3 +541,11 @@ bool fraction<NumeratorType, DenominatorType>::operator<(const U& other) const {
     auto frac = this->numerator % this->denominator;
     return whole < other || whole == other && frac < 0;
 }
+
+// Aliases
+
+typedef fraction<int8_t, int8_t> F16B;
+
+typedef fraction<int16_t, int16_t> F32B;
+
+typedef fraction<int32_t, int32_t> F64B;
