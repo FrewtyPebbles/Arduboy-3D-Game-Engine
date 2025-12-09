@@ -6,6 +6,7 @@
 template <typename NumeratorType, typename DenominatorType>
 class fraction {
 public:
+    constexpr fraction() = default;
     fraction(NumeratorType numerator, DenominatorType denominator);
     template<typename U>
     fraction(const U& integer);
@@ -14,6 +15,13 @@ public:
 
     template <typename OtherNumeratorType, typename OtherDenominatorType>
     fraction(const fraction<OtherNumeratorType, OtherDenominatorType> & other);
+
+    static constexpr fraction const_construct(NumeratorType numerator, DenominatorType denominator){
+        fraction ret;
+        ret.numerator = numerator;
+        ret.denominator = denominator;
+        return ret;
+    }
 
     NumeratorType numerator;
     DenominatorType denominator;
@@ -163,6 +171,64 @@ public:
     }
 
     fraction<NumeratorType, DenominatorType> operator-() const;
+
+    // MODULO
+
+    template<typename Num, typename Den>
+    static fraction<Num, Den> mod(const fraction<Num, Den>& x, const fraction<Num, Den>& y)
+    {
+        using Frac = fraction<Num, Den>;
+
+        // Compute integer quotient floor(x / y)
+        // Use 64-bit integer to avoid overflow if needed
+        int64_t xn = x.numerator;
+        int64_t xd = x.denominator;
+        int64_t yn = y.numerator;
+        int64_t yd = y.denominator;
+
+        // x / y = (xn/xd) / (yn/yd) = (xn*yd) / (xd*yn)
+        int64_t numerator_div = xn * yd;
+        int64_t denominator_div = xd * yn;
+
+        int64_t q = numerator_div / denominator_div; // floor division
+
+        // x % y = x - y*q
+        int64_t result_num = xn * yd - q * yn * xd;
+        int64_t result_den = xd * yd;
+
+        return Frac(static_cast<Num>(result_num), static_cast<Den>(result_den));
+    }
+
+    template<typename U>
+    fraction<NumeratorType, DenominatorType> operator%(const U& other) const;
+    template <typename OtherNumeratorType, typename OtherDenominatorType>
+    fraction operator%(const fraction<OtherNumeratorType, OtherDenominatorType>& other) const;
+
+    friend fraction<NumeratorType, DenominatorType> operator%(const int8_t& lhs, const fraction<NumeratorType, DenominatorType>& rhs) {
+        return mod(lhs, rhs);
+    }
+
+    friend fraction<NumeratorType, DenominatorType> operator%(const int16_t& lhs, const fraction<NumeratorType, DenominatorType>& rhs) {
+        return mod(lhs, rhs);
+    }
+
+    friend fraction<NumeratorType, DenominatorType> operator%(const int32_t& lhs, const fraction<NumeratorType, DenominatorType>& rhs) {
+        return mod(lhs, rhs);
+    }
+
+    friend fraction<NumeratorType, DenominatorType> operator%(const uint8_t& lhs, const fraction<NumeratorType, DenominatorType>& rhs) {
+        return mod(lhs, rhs);
+    }
+
+    friend fraction<NumeratorType, DenominatorType> operator%(const uint16_t& lhs, const fraction<NumeratorType, DenominatorType>& rhs) {
+        return mod(lhs, rhs);
+    }
+
+    friend fraction<NumeratorType, DenominatorType> operator%(const uint32_t& lhs, const fraction<NumeratorType, DenominatorType>& rhs) {
+        return mod(lhs, rhs);
+    }
+
+    // END MODULO
 
     template<typename U>
     void operator*=(const U& other);
@@ -449,6 +515,19 @@ fraction<NumeratorType, DenominatorType> fraction<NumeratorType, DenominatorType
         -this->numerator,
         this->denominator
     );
+}
+
+// MODULO
+
+template <typename NumeratorType, typename DenominatorType>
+template<typename U>
+fraction<NumeratorType, DenominatorType> fraction<NumeratorType, DenominatorType>::operator%(const U& other) const {
+    return fraction<NumeratorType, DenominatorType>::mod(*this, other);
+}
+template <typename NumeratorType, typename DenominatorType>
+template <typename OtherNumeratorType, typename OtherDenominatorType>
+fraction<NumeratorType, DenominatorType> fraction<NumeratorType, DenominatorType>::operator%(const fraction<OtherNumeratorType, OtherDenominatorType>& other) const {
+    return fraction<NumeratorType, DenominatorType>::mod(*this, other);
 }
 
 

@@ -1,39 +1,105 @@
 #pragma once
 #include "fraction.h"
 
+static const F32B TRIG_LUT_PI_48[49] = {
+    F32B::const_construct(0, 1024),     // 0·π/48
+    F32B::const_construct(67, 1024),    // 1·π/48
+    F32B::const_construct(134, 1024),   // 2·π/48
+    F32B::const_construct(201, 1024),   // 3·π/48
+    F32B::const_construct(267, 1024),   // 4·π/48
+    F32B::const_construct(334, 1024),   // 5·π/48
+    F32B::const_construct(399, 1024),   // 6·π/48
+    F32B::const_construct(465, 1024),   // 7·π/48
+    F32B::const_construct(530, 1024),   // 8·π/48
+    F32B::const_construct(589, 1024),   // 9·π/48
+    F32B::const_construct(644, 1024),   // 10·π/48
+    F32B::const_construct(698, 1024),   // 11·π/48
+    F32B::const_construct(743, 1024),   // 12·π/48
+    F32B::const_construct(787, 1024),   // 13·π/48
+    F32B::const_construct(829, 1024),   // 14·π/48
+    F32B::const_construct(862, 1024),   // 15·π/48
+    F32B::const_construct(891, 1024),   // 16·π/48
+    F32B::const_construct(915, 1024),   // 17·π/48
+    F32B::const_construct(938, 1024),   // 18·π/48
+    F32B::const_construct(956, 1024),   // 19·π/48
+    F32B::const_construct(970, 1024),   // 20·π/48
+    F32B::const_construct(980, 1024),   // 21·π/48
+    F32B::const_construct(988, 1024),   // 22·π/48
+    F32B::const_construct(993, 1024),   // 23·π/48
+    F32B::const_construct(996, 1024),   // 24·π/48
+    F32B::const_construct(998, 1024),   // 25·π/48
+    F32B::const_construct(999, 1024),   // 26·π/48
+    F32B::const_construct(1000, 1024),  // 27·π/48
+    F32B::const_construct(1001, 1024),  // 28·π/48
+    F32B::const_construct(1002, 1024),  // 29·π/48
+    F32B::const_construct(1003, 1024),  // 30·π/48
+    F32B::const_construct(1004, 1024),  // 31·π/48
+    F32B::const_construct(1005, 1024),  // 32·π/48
+    F32B::const_construct(1006, 1024),  // 33·π/48
+    F32B::const_construct(1007, 1024),  // 34·π/48
+    F32B::const_construct(1008, 1024),  // 35·π/48
+    F32B::const_construct(1009, 1024),  // 36·π/48
+    F32B::const_construct(1010, 1024),  // 37·π/48
+    F32B::const_construct(1011, 1024),  // 38·π/48
+    F32B::const_construct(1012, 1024),  // 39·π/48
+    F32B::const_construct(1013, 1024),  // 40·π/48
+    F32B::const_construct(1014, 1024),  // 41·π/48
+    F32B::const_construct(1015, 1024),  // 42·π/48
+    F32B::const_construct(1016, 1024),  // 43·π/48
+    F32B::const_construct(1017, 1024),  // 44·π/48
+    F32B::const_construct(1018, 1024),  // 45·π/48
+    F32B::const_construct(1019, 1024),  // 46·π/48
+    F32B::const_construct(1020, 1024),  // 47·π/48
+    F32B::const_construct(1024, 1024)   // 48·π/48 = π/2
+};
+
 namespace Utility {
     template<typename T>
-    constexpr T factorial(int8_t n){
+    constexpr T factorial(T n){
         return (n <= 1) ? T(1) : T(n) * factorial<T>(n - 1);
     }
 
     // ----- sin(x) -----
     template<typename Num, typename Den>
-    fraction<Num, Den> sin(const fraction<Num, Den>& x, uint8_t terms = 10)
+    fraction<Num, Den> sin(const fraction<Num, Den>& x)
     {
         using Frac = fraction<Num, Den>;
         
-        Frac sum(0);
-        Frac power = x;                // x^1
-        int8_t sign = 1;
+        // π and 2π as fractions:
+        const Frac PI(355, 113);
+        const Frac TWO_PI = PI * 2;
+        const Frac PI_OVER_48 = PI / 48;
 
-        for (uint8_t k = 0; k < terms; ++k)
-        {
-            int16_t n = 2 * k + 1;         // odd power
-            int16_t _factorial = Utility::factorial<int16_t>(n);
+        // 1. Wrap to [-π, π]
+        Frac t = x % TWO_PI;
+        if (t.numerator < 0)
+            t = t + TWO_PI;
 
-            Frac term = power / _factorial;
-            if (!sign)
-                term = Frac(0) - term;
+        // 2. Quadrant reduction to [0, π/2]
+        int sign = 1;
 
-            sum = sum + term;
-
-            // update for next iteration
-            power = power * x * x;     // multiply by x^2
-            sign ^= 1;                 // flip sign
+        if (t > PI) {
+            t = t - PI;
+            sign = -1;
+        }
+        if (t > PI / 2) {
+            t = PI - t;
         }
 
-        return sum;
+        // 3. Convert t into index
+        //    idx = round(t / (π/16))
+        Frac idxFrac = t / PI_OVER_48;
+
+        // idxFrac is a fraction — convert safely to integer
+        int idx = (idxFrac.numerator + idxFrac.denominator/2) / idxFrac.denominator;
+        
+        if (idx < 0) idx = 0;
+        if (idx > 48) idx = 48;
+
+        // 4. Return value from table
+        return (sign > 0)
+            ? Frac(TRIG_LUT_PI_48[idx])
+            : Frac(0) - TRIG_LUT_PI_48[idx];
     }
 
     // ----- cos(x) -----
@@ -140,7 +206,7 @@ namespace Utility {
     template<typename Num, typename Den>
     fraction<Num,Den> tan(const fraction<Num,Den>& x, uint8_t terms = 10)
     {
-        return Utility::sin(x, terms) / Utility::cos(x, terms);
+        return Utility::sin(x) / Utility::cos(x, terms);
     }
 
     template<typename Num, typename Den>

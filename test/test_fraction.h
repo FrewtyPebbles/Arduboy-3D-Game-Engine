@@ -9,14 +9,6 @@ void print_fraction(fraction<N,D> frac) {
     UnityPrint(buf);
 }
 
-void setUp(void) {
-
-}
-
-void tearDown(void) {
-    // clean stuff up here
-}
-
 // OPERATIONS
 
 void test_add_2_fractions() {
@@ -75,6 +67,30 @@ void test_eq_divide_2_fractions() {
     TEST_ASSERT_TRUE(frac.numerator == 7 && frac.denominator == 6);
 }
 
+void test_multiply_fraction_scalar() {
+    fraction<int8_t, int8_t> frac(1, 2);
+    auto frac2 = frac * 2;
+    TEST_ASSERT_TRUE(frac2 == 1);
+}
+
+void test_multiply_fraction_scalar2() {
+    fraction<int8_t, int8_t> frac(1, 2);
+    auto frac2 = frac * 7;
+    TEST_ASSERT_TRUE((frac2 == fraction<int8_t, int8_t>(7,2)));
+}
+
+void test_add_fraction_scalar() {
+    fraction<int8_t, int8_t> frac(1, 2);
+    auto frac2 = frac + 2;
+    TEST_ASSERT_TRUE((frac2 == fraction<int8_t, int8_t>(5, 2)));
+}
+
+void test_add_fraction_scalar2() {
+    fraction<int8_t, int8_t> frac(1, 2);
+    auto frac2 = frac + 7;
+    TEST_ASSERT_TRUE((frac2 == fraction<int8_t, int8_t>(15, 2)));
+}
+
 // COMPARISON
 
 void test_fraction_eq_fraction() {
@@ -103,8 +119,7 @@ void test_vec2_multiply_fractions() {
 }
 
 
-int main(int argc, char **argv) {
-    UNITY_BEGIN();
+void run_fraction_tests() {
 
     RUN_TEST(test_add_2_fractions);
     RUN_TEST(test_subtract_2_fractions);
@@ -122,5 +137,10 @@ int main(int argc, char **argv) {
     RUN_TEST(test_vec2_add_fractions);
     RUN_TEST(test_vec2_multiply_fractions);
 
-    UNITY_END();
+    RUN_TEST(test_multiply_fraction_scalar);
+    RUN_TEST(test_multiply_fraction_scalar2);
+
+    RUN_TEST(test_add_fraction_scalar);
+    RUN_TEST(test_add_fraction_scalar2);
+
 }
