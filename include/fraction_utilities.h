@@ -1,57 +1,89 @@
 #pragma once
 #include "fraction.h"
 
-static const F32B TRIG_LUT_PI_48[49] = {
-    F32B::const_construct(0, 1024),     // 0·π/48
-    F32B::const_construct(67, 1024),    // 1·π/48
-    F32B::const_construct(134, 1024),   // 2·π/48
-    F32B::const_construct(201, 1024),   // 3·π/48
-    F32B::const_construct(267, 1024),   // 4·π/48
-    F32B::const_construct(334, 1024),   // 5·π/48
-    F32B::const_construct(399, 1024),   // 6·π/48
-    F32B::const_construct(465, 1024),   // 7·π/48
-    F32B::const_construct(530, 1024),   // 8·π/48
-    F32B::const_construct(589, 1024),   // 9·π/48
-    F32B::const_construct(644, 1024),   // 10·π/48
-    F32B::const_construct(698, 1024),   // 11·π/48
-    F32B::const_construct(743, 1024),   // 12·π/48
-    F32B::const_construct(787, 1024),   // 13·π/48
-    F32B::const_construct(829, 1024),   // 14·π/48
-    F32B::const_construct(862, 1024),   // 15·π/48
-    F32B::const_construct(891, 1024),   // 16·π/48
-    F32B::const_construct(915, 1024),   // 17·π/48
-    F32B::const_construct(938, 1024),   // 18·π/48
-    F32B::const_construct(956, 1024),   // 19·π/48
-    F32B::const_construct(970, 1024),   // 20·π/48
-    F32B::const_construct(980, 1024),   // 21·π/48
-    F32B::const_construct(988, 1024),   // 22·π/48
-    F32B::const_construct(993, 1024),   // 23·π/48
-    F32B::const_construct(996, 1024),   // 24·π/48
-    F32B::const_construct(998, 1024),   // 25·π/48
-    F32B::const_construct(999, 1024),   // 26·π/48
-    F32B::const_construct(1000, 1024),  // 27·π/48
-    F32B::const_construct(1001, 1024),  // 28·π/48
-    F32B::const_construct(1002, 1024),  // 29·π/48
-    F32B::const_construct(1003, 1024),  // 30·π/48
-    F32B::const_construct(1004, 1024),  // 31·π/48
-    F32B::const_construct(1005, 1024),  // 32·π/48
-    F32B::const_construct(1006, 1024),  // 33·π/48
-    F32B::const_construct(1007, 1024),  // 34·π/48
-    F32B::const_construct(1008, 1024),  // 35·π/48
-    F32B::const_construct(1009, 1024),  // 36·π/48
-    F32B::const_construct(1010, 1024),  // 37·π/48
-    F32B::const_construct(1011, 1024),  // 38·π/48
-    F32B::const_construct(1012, 1024),  // 39·π/48
-    F32B::const_construct(1013, 1024),  // 40·π/48
-    F32B::const_construct(1014, 1024),  // 41·π/48
-    F32B::const_construct(1015, 1024),  // 42·π/48
-    F32B::const_construct(1016, 1024),  // 43·π/48
-    F32B::const_construct(1017, 1024),  // 44·π/48
-    F32B::const_construct(1018, 1024),  // 45·π/48
-    F32B::const_construct(1019, 1024),  // 46·π/48
-    F32B::const_construct(1020, 1024),  // 47·π/48
-    F32B::const_construct(1024, 1024)   // 48·π/48 = π/2
+static const F32B TRIG_LUT_PI_79[80] = {
+    F32B::const_construct(0, 3000),  // 0·π/79
+    F32B::const_construct(60, 3000),  // 1·π/79
+    F32B::const_construct(119, 3000),  // 2·π/79
+    F32B::const_construct(179, 3000),  // 3·π/79
+    F32B::const_construct(238, 3000),  // 4·π/79
+    F32B::const_construct(298, 3000),  // 5·π/79
+    F32B::const_construct(357, 3000),  // 6·π/79
+    F32B::const_construct(416, 3000),  // 7·π/79
+    F32B::const_construct(475, 3000),  // 8·π/79
+    F32B::const_construct(534, 3000),  // 9·π/79
+    F32B::const_construct(593, 3000),  // 10·π/79
+    F32B::const_construct(651, 3000),  // 11·π/79
+    F32B::const_construct(709, 3000),  // 12·π/79
+    F32B::const_construct(767, 3000),  // 13·π/79
+    F32B::const_construct(824, 3000),  // 14·π/79
+    F32B::const_construct(882, 3000),  // 15·π/79
+    F32B::const_construct(938, 3000),  // 16·π/79
+    F32B::const_construct(995, 3000),  // 17·π/79
+    F32B::const_construct(1051, 3000),  // 18·π/79
+    F32B::const_construct(1107, 3000),  // 19·π/79
+    F32B::const_construct(1162, 3000),  // 20·π/79
+    F32B::const_construct(1217, 3000),  // 21·π/79
+    F32B::const_construct(1271, 3000),  // 22·π/79
+    F32B::const_construct(1325, 3000),  // 23·π/79
+    F32B::const_construct(1378, 3000),  // 24·π/79
+    F32B::const_construct(1431, 3000),  // 25·π/79
+    F32B::const_construct(1483, 3000),  // 26·π/79
+    F32B::const_construct(1534, 3000),  // 27·π/79
+    F32B::const_construct(1585, 3000),  // 28·π/79
+    F32B::const_construct(1636, 3000),  // 29·π/79
+    F32B::const_construct(1685, 3000),  // 30·π/79
+    F32B::const_construct(1734, 3000),  // 31·π/79
+    F32B::const_construct(1783, 3000),  // 32·π/79
+    F32B::const_construct(1830, 3000),  // 33·π/79
+    F32B::const_construct(1877, 3000),  // 34·π/79
+    F32B::const_construct(1923, 3000),  // 35·π/79
+    F32B::const_construct(1969, 3000),  // 36·π/79
+    F32B::const_construct(2013, 3000),  // 37·π/79
+    F32B::const_construct(2057, 3000),  // 38·π/79
+    F32B::const_construct(2100, 3000),  // 39·π/79
+    F32B::const_construct(2142, 3000),  // 40·π/79
+    F32B::const_construct(2184, 3000),  // 41·π/79
+    F32B::const_construct(2224, 3000),  // 42·π/79
+    F32B::const_construct(2264, 3000),  // 43·π/79
+    F32B::const_construct(2302, 3000),  // 44·π/79
+    F32B::const_construct(2340, 3000),  // 45·π/79
+    F32B::const_construct(2377, 3000),  // 46·π/79
+    F32B::const_construct(2413, 3000),  // 47·π/79
+    F32B::const_construct(2448, 3000),  // 48·π/79
+    F32B::const_construct(2482, 3000),  // 49·π/79
+    F32B::const_construct(2515, 3000),  // 50·π/79
+    F32B::const_construct(2547, 3000),  // 51·π/79
+    F32B::const_construct(2578, 3000),  // 52·π/79
+    F32B::const_construct(2608, 3000),  // 53·π/79
+    F32B::const_construct(2637, 3000),  // 54·π/79
+    F32B::const_construct(2665, 3000),  // 55·π/79
+    F32B::const_construct(2692, 3000),  // 56·π/79
+    F32B::const_construct(2718, 3000),  // 57·π/79
+    F32B::const_construct(2742, 3000),  // 58·π/79
+    F32B::const_construct(2766, 3000),  // 59·π/79
+    F32B::const_construct(2788, 3000),  // 60·π/79
+    F32B::const_construct(2810, 3000),  // 61·π/79
+    F32B::const_construct(2830, 3000),  // 62·π/79
+    F32B::const_construct(2849, 3000),  // 63·π/79
+    F32B::const_construct(2868, 3000),  // 64·π/79
+    F32B::const_construct(2885, 3000),  // 65·π/79
+    F32B::const_construct(2900, 3000),  // 66·π/79
+    F32B::const_construct(2915, 3000),  // 67·π/79
+    F32B::const_construct(2929, 3000),  // 68·π/79
+    F32B::const_construct(2941, 3000),  // 69·π/79
+    F32B::const_construct(2952, 3000),  // 70·π/79
+    F32B::const_construct(2962, 3000),  // 71·π/79
+    F32B::const_construct(2971, 3000),  // 72·π/79
+    F32B::const_construct(2979, 3000),  // 73·π/79
+    F32B::const_construct(2985, 3000),  // 74·π/79
+    F32B::const_construct(2991, 3000),  // 75·π/79
+    F32B::const_construct(2995, 3000),  // 76·π/79
+    F32B::const_construct(2998, 3000),  // 77·π/79
+    F32B::const_construct(2999, 3000),  // 78·π/79
+    F32B::const_construct(3000, 3000),  // 79·π/79
 };
+
 
 namespace Utility {
     template<typename T>
@@ -64,72 +96,51 @@ namespace Utility {
     fraction<Num, Den> sin(const fraction<Num, Den>& x)
     {
         using Frac = fraction<Num, Den>;
-        
-        // π and 2π as fractions:
+
+        // π and 2π as fractions
         const Frac PI(355, 113);
         const Frac TWO_PI = PI * 2;
-        const Frac PI_OVER_48 = PI / 48;
 
-        // 1. Wrap to [-π, π]
+        // 1. Wrap to [0, 2π)
         Frac t = x % TWO_PI;
         if (t.numerator < 0)
             t = t + TWO_PI;
 
-        // 2. Quadrant reduction to [0, π/2]
-        int sign = 1;
+        // 2. Determine quadrant
+        int quadrant = 0;
+        if (t >= PI) { t = t - PI; quadrant += 2; }
+        if (t >= PI / 2) { t = PI - t; quadrant += 1; }
 
-        if (t > PI) {
-            t = t - PI;
-            sign = -1;
-        }
-        if (t > PI / 2) {
-            t = PI - t;
-        }
-
-        // 3. Convert t into index
-        //    idx = round(t / (π/16))
-        Frac idxFrac = t / PI_OVER_48;
-
-        // idxFrac is a fraction — convert safely to integer
-        int idx = (idxFrac.numerator + idxFrac.denominator/2) / idxFrac.denominator;
-        
+        // 3. Compute LUT index
+        int idx = (t.numerator * 48 + t.denominator / 2) / t.denominator; // round(t / (π/48))
         if (idx < 0) idx = 0;
-        if (idx > 48) idx = 48;
+        if (idx > 79) idx = 79;
 
-        // 4. Return value from table
-        return (sign > 0)
-            ? Frac(TRIG_LUT_PI_48[idx])
-            : Frac(0) - TRIG_LUT_PI_48[idx];
+        // 4. Lookup LUT
+        Frac value = Frac(TRIG_LUT_PI_79[idx]);
+
+        // 5. Apply quadrant sign
+        if (quadrant == 0) return value;       // 0..π/2
+        if (quadrant == 1) return value;       // mirrored 0..π/2
+        if (quadrant == 2) return -value;      // π..3π/2
+        if (quadrant == 3) return -value;      // mirrored π..3π/2
+
+        return value; // fallback
     }
+
+
+
 
     // ----- cos(x) -----
     template<typename Num, typename Den>
-    fraction<Num, Den> cos(const fraction<Num, Den>& x, uint8_t terms = 10)
+    fraction<Num, Den> cos(const fraction<Num, Den>& x)
     {
-        using Frac = fraction<Num, Den>;
-
-        Frac sum(1);                  // 0th term = 1
-        Frac power(1);                // x^0
-        int8_t sign = 1;
-
-        for (uint8_t k = 1; k < terms; ++k)
-        {
-            int16_t n = 2 * k;            // even power
-            power = power * x * x;    // x^(2k)
-            int16_t _factorial = Utility::factorial<int16_t>(n);
-
-            Frac term = power / _factorial;
-
-            if (!sign)
-                term = Frac(0) - term;
-
-            sum = sum + term;
-
-            sign ^= 1;
-        }
-
-        return sum;
+        // Simply compute sin(x + π/2)
+        const fraction<Num, Den> PI(355, 113);
+        const fraction<Num, Den> PI_OVER_2 = PI / 2;
+        return sin<Num, Den>(x + PI_OVER_2);
     }
+
 
     template<typename Num, typename Den>
     fraction<Num,Den> atan(const fraction<Num,Den>& z)
@@ -206,7 +217,7 @@ namespace Utility {
     template<typename Num, typename Den>
     fraction<Num,Den> tan(const fraction<Num,Den>& x, uint8_t terms = 10)
     {
-        return Utility::sin(x) / Utility::cos(x, terms);
+        return Utility::sin(x) / Utility::cos(x);
     }
 
     template<typename Num, typename Den>

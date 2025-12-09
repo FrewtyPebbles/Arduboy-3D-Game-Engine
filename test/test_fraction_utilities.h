@@ -73,35 +73,35 @@ void test_sin_negative(void) {
 // ========== Cos Tests ==========
 void test_cos_zero(void) {
     fraction<int32_t, int32_t> x(0);
-    auto result = Utility::cos(x, 10);
+    auto result = Utility::cos(x);
     assert_is_close(result, 1.0f, 0.001f);
 }
 
 void test_cos_pi_over_6(void) {
     // cos(π/6) ≈ 0.866
     fraction<int32_t, int32_t> x(52, 100); // Use 0.52 ≈ π/6
-    auto result = Utility::cos(x, 15);
+    auto result = Utility::cos(x);
     assert_is_close(result, 0.866f, 0.15f);
 }
 
 void test_cos_pi_over_4(void) {
     // cos(π/4) ≈ 0.707
     fraction<int32_t, int32_t> x(79, 100); // Use 0.79 ≈ π/4
-    auto result = Utility::cos(x, 15);
+    auto result = Utility::cos(x);
     assert_is_close(result, 0.707f, 0.15f);
 }
 
 void test_cos_pi_over_2(void) {
     // cos(π/2) ≈ 0.0
     fraction<int32_t, int32_t> x(157, 100); // Use 1.57 ≈ π/2
-    auto result = Utility::cos(x, 15);
+    auto result = Utility::cos(x);
     assert_is_close(result, 0.0f, 0.15f);
 }
 
 void test_cos_pi(void) {
     // cos(π) ≈ -1.0
     fraction<int32_t, int32_t> x(314, 100); // Use 3.14 ≈ π
-    auto result = Utility::cos(x, 15);
+    auto result = Utility::cos(x);
     assert_is_close(result, -1.0f, 0.15f);
 }
 
