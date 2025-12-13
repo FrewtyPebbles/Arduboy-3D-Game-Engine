@@ -1,8 +1,6 @@
 #pragma once
 
 #include "utility.h"
-#include "fraction_utilities.h"
-#include "fraction.h"
 
 #include <stdint.h>
 #include <math.h>

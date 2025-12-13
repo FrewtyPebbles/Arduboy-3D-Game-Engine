@@ -100,6 +100,37 @@ namespace Utility {
         template <typename T>
         using make_signed_type = typename make_signed_type_impl<T>::type;
 
+        // UPCAST
+
+        template <typename T>
+        struct upcast_impl {
+            using type = T;
+        };
+
+        template <>
+        struct upcast_impl<uint8_t> {
+            using type = uint16_t;
+        };
+
+        template <>
+        struct upcast_impl<uint16_t> {
+            using type = uint32_t;
+        };
+
+        template <>
+        struct upcast_impl<int8_t> {
+            using type = int16_t;
+        };
+
+        template <>
+        struct upcast_impl<int16_t> {
+            using type = int32_t;
+        };
+
+        // Alias
+        template <typename T>
+        using upcast = typename upcast_impl<T>::type;
+
         // NUMERIC LIMIT
 
         template <typename T>

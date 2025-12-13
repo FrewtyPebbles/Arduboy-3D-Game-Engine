@@ -1,7 +1,5 @@
 #pragma once
 
-#include "fraction_utilities.h"
-#include "fraction.h"
 #include "utility.h"
 
 #include <stdint.h>
@@ -292,8 +290,8 @@ Vec2<T> Vec2<T>::rotate(fraction<N, D> angle_radians) const {
   fraction<N, D> old_y = y;
   
   // Calculate Sine and Cosine of the angle once for efficiency
-  fraction<N, D> cos_theta = Utility::cos(angle_radians, 2);
-  fraction<N, D> sin_theta = Utility::sin(angle_radians, 2);
+  fraction<N, D> cos_theta = Utility::cos(angle_radians);
+  fraction<N, D> sin_theta = Utility::sin(angle_radians);
 
   // Apply the rotation formula
   return Vec2<T>(static_cast<T>(old_x * cos_theta - old_y * sin_theta), static_cast<T>(old_x * sin_theta + old_y * cos_theta));
@@ -315,6 +313,3 @@ namespace Utility {
 // TYPE ALIASES
 
 typedef Vec2<int16_t> Vec2I;
-typedef Vec2<F16B> Vec2F16B;
-typedef Vec2<F32B> Vec2F32B;
-typedef Vec2<F64B> Vec2F64B;

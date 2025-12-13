@@ -6,8 +6,6 @@
 #include "sprite2d.h"
 #include "vec2.h"
 #include "surface.h"
-#include "fraction.h"
-#include "fraction_utilities.h"
 
 Arduboy2 arduboy;
 Sprites sprites;
